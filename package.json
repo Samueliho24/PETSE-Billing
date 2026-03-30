@@ -1,0 +1,25 @@
+{
+  "name": "petse-billing",
+  "version": "1.0.0",
+  "description": "Desktop application for billing management in PETSE program of LUZ School of Nursing.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Samueliho24/PETSE-Billing.git"
+  },
+  "keywords": [],
+  "author": "Samuel Chourio",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Samueliho24/PETSE-Billing/issues"
+  },
+  "homepage": "https://github.com/Samueliho24/PETSE-Billing#readme",
+  "devDependencies": {
+    "electron": "^41.1.0",
+    "electron-is-dev": "^3.0.1"
+  }
+}
