@@ -1,12 +1,12 @@
 from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime, Numeric
 from sqlalchemy.orm import relationship
 from BackEnd import Base
-import datetime
+import datetime , uuid
 
 class ChangeHistory(Base):
     __tablename__ = "changehistory"
 
-    id = Column(String, primary_key=True, index=True, nullable=False)
+    id = Column(String, primary_key=True, index=True, nullable=False, default=lambda: str(uuid.uuid4()))
     userId = Column(String, ForeignKey("users.id"))
     comment = Column(String)
     dateChanged = Column(DateTime, default=datetime.datetime.utcnow)
@@ -16,7 +16,7 @@ class ChangeHistory(Base):
 class Invoices(Base):
     __tablename__ = "invoices"
 
-    id = Column(String, primary_key=True, index=True, nullable=False)
+    id = Column(String, primary_key=True, index=True, nullable=False, default=lambda: str(uuid.uuid4()))
     userId = Column(String, ForeignKey("users.id"))
     studentId = Column(String, ForeignKey("students.id"))
     amount = Column(Numeric(20, 4))
@@ -32,7 +32,7 @@ class Payments(Base):
 
     __tablename__ = "payments"
 
-    id = Column(String, primary_key=True, index=True, nullable=False)
+    id = Column(String, primary_key=True, index=True, nullable=False, default=lambda: str(uuid.uuid4()))
     invoiceId = Column(String, ForeignKey("invoices.id"))
     paymentMethod = Column(String, nullable=False)
     exchangeRate = Column(Numeric(10, 4), nullable=False)
@@ -47,7 +47,7 @@ class Payments(Base):
 class Students(Base):
     __tablename__ = "students"
 
-    id = Column(String, primary_key=True, index=True, nullable=False)
+    id = Column(String, primary_key=True, index=True, nullable=False, default=lambda: str(uuid.uuid4()))
     name = Column(String)
     lastname = Column(String)
     identification = Column(Integer, unique=True)
@@ -62,7 +62,7 @@ class Students(Base):
 class Users(Base):
     __tablename__ = "users"
 
-    id = Column(String, primary_key=True, index=True, nullable=False)
+    id = Column(String, primary_key=True, index=True, nullable=False, default=lambda: str(uuid.uuid4()))
     username = Column(String, unique=True)
     email = Column(String)
     password = Column(String)
