@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from BackEnd.db import engine, Base
-from BackEnd.routers import students, users, invoices, payments, changes, reports
+from .db import engine, Base
+from .routers import students, users, invoices, payments
 
 app = FastAPI(title="MediBill API", description="Sistema de Facturación para PETSE")
 

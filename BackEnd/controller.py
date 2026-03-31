@@ -4,7 +4,7 @@ from decimal import Decimal
 
 ####Users
 def loginUser(db: Session, user: schemas.UserLogin):
-    db_user = db.query(models.User).filter(models.User.username == user.username, models.User.password == user.password).first()
+    db_user = db.query(models.Users).filter(models.Users.username == user.username, models.Users.password == user.password).first()
     if not db_user:
         return {"message": "Credenciales inválidas", "status": "error"}
     if db_user.status != "Activo":
@@ -12,14 +12,14 @@ def loginUser(db: Session, user: schemas.UserLogin):
     return {"message": "Inicio de sesión exitoso", "status": "success", "user": db_user}
 
 def createUser(db: Session, user: schemas.UserCreate):
-    db_user = models.User(username=user.username,  password=user.password, name=user.name, identification=user.identification)
+    db_user = models.Users(username=user.username,  password=user.password, name=user.name, identification=user.identification)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
     return {"message": "Usuario creado exitosamente", "status": "success"}
 
-def statusChangeUser(db: Session, user: schemas.UserDelete):
-    db_user = db.query(models.User).filter(models.User.id == user.id).first()
+def statusChangeUser(db: Session, user: schemas.UserStatusChange):
+    db_user = db.query(models.Users).filter(models.Users.id == user.id).first()
     if not db_user:
         return {"message": "Usuario no encontrado", "status": "error"}
     db_user.status = user.status
@@ -27,17 +27,17 @@ def statusChangeUser(db: Session, user: schemas.UserDelete):
     return {"message": "Estado del usuario actualizado exitosamente", "status": "success"}
 
 def getUser(db: Session, data: schemas.UserSearch):
-    query = db.query(models.User)
+    query = db.query(models.Users)
     if data.username:
-        query = query.filter(models.User.username.ilike(f"%{data.username}%"))
+        query = query.filter(models.Users.username.ilike(f"%{data.username}%"))
     if data.name:
-        query = query.filter(models.User.name.ilike(f"%{data.name}%"))
+        query = query.filter(models.Users.name.ilike(f"%{data.name}%"))
     if data.identification:
-        query = query.filter(models.User.identification == data.identification)
+        query = query.filter(models.Users.identification == data.identification)
     return query.all()
 
 def getUsers(db: Session):
-    return db.query(models.User).all()
+    return db.query(models.Users).all()
 
 ######
 
@@ -49,7 +49,7 @@ def createStudent(db: Session, student: schemas.StudentCreate):
     db.refresh(db_student)
     return {"message": "Estudiante creado exitosamente", "status": "success"}
 
-def statusChangeStudent(db: Session, student: schemas.StudentDelete):
+def statusChangeStudent(db: Session, student: schemas.StudentStatusChange):
     db_student = db.query(models.Students).filter(models.Students.id == student.id).first()
     if not db_student:
         return {"message": "Estudiante no encontrado", "status": "error"}

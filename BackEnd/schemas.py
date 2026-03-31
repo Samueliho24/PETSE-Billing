@@ -50,6 +50,10 @@ class InvoiceCreate(BaseModel):
     amount: Decimal
     description: str
 
+class InvoiceSearch(BaseModel):
+    userId: Optional[str] = None
+    studentId: Optional[str] = None
+
 class InvoiceStatusChange(BaseModel):
     id: str
     status: str
@@ -64,6 +68,9 @@ class PaymentCreate(BaseModel):
     amountBs: Decimal
     bankReference: Optional[str] = None
     note: Optional[str] = None
+
+class PaymentSearch(BaseModel):
+    invoiceId: Optional[str] = None
 ######
 
 ####Queries
