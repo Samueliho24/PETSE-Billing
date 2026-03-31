@@ -18,9 +18,7 @@ class UserStatusChange(BaseModel):
     status: str
 
 class UserSearch(BaseModel):
-    username: Optional[str] = None
-    name: Optional[str] = None
-    identification: Optional[int] = None
+    data: Optional[str] = None
 ######
 
 ####Students
@@ -38,9 +36,7 @@ class StudentStatusChange(BaseModel):
     status: str
 
 class StudentSearch(BaseModel):
-    name: Optional[str] = None
-    lastname: Optional[str] = None
-    identification: Optional[int] = None
+    data: Optional[str] = None
 ######
 
 ####Invoices

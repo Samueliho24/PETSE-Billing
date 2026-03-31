@@ -1,8 +1,18 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import or_, cast, select, String
 from . import models, schemas
+from .db import SessionLocal
+from fastapi import Depends
 from decimal import Decimal
 
 ####Users
+def createDefaultAdmin():
+    with SessionLocal() as db:
+        if not db.query(models.Users).filter(models.Users.username == "admin" and models.Users.password == "dfc3cd5c5b15dedddf723e0912204967c1ab04ae602d907d7505e4645fc3497e").first():
+            db_user = models.Users(username="admin", password="dfc3cd5c5b15dedddf723e0912204967c1ab04ae602d907d7505e4645fc3497e", name="Administrador", identification="00000000")
+            db.add(db_user)
+            db.commit()
+
 def loginUser(db: Session, user: schemas.UserLogin):
     db_user = db.query(models.Users).filter(models.Users.username == user.username, models.Users.password == user.password).first()
     if not db_user:
@@ -27,14 +37,13 @@ def statusChangeUser(db: Session, user: schemas.UserStatusChange):
     return {"message": "Estado del usuario actualizado exitosamente", "status": "success"}
 
 def getUser(db: Session, data: schemas.UserSearch):
-    query = db.query(models.Users)
-    if data.username:
-        query = query.filter(models.Users.username.ilike(f"%{data.username}%"))
-    if data.name:
-        query = query.filter(models.Users.name.ilike(f"%{data.name}%"))
-    if data.identification:
-        query = query.filter(models.Users.identification == data.identification)
-    return query.all()
+    querydata = select(models.Users).where(or_(
+        models.Users.username.ilike(f"%{data.data}%"), 
+        models.Users.name.ilike(f"%{data.data}%"), 
+        cast(models.Users.identification, String).ilike(f"%{data.data}%")
+        ))
+    query = db.execute(querydata)
+    return query.scalars().all()
 
 def getUsers(db: Session):
     return db.query(models.Users).all()
@@ -58,14 +67,13 @@ def statusChangeStudent(db: Session, student: schemas.StudentStatusChange):
     return {"message": "Estado del estudiante actualizado exitosamente", "status": "success"}
 
 def getStudent(db: Session, data: schemas.StudentSearch):
-    query = db.query(models.Students)
-    if data.name:
-        query = query.filter(models.Students.name.ilike(f"%{data.name}%"))
-    if data.lastname:
-        query = query.filter(models.Students.lastname.ilike(f"%{data.lastname}%"))
-    if data.identification:
-        query = query.filter(models.Students.identification == data.identification)
-    return query.all()
+    querydata = select(models.Students).where(or_(
+        models.Students.name.ilike(f"%{data.name}%"), 
+        models.Students.lastname.ilike(f"%{data.lastname}%"), 
+        cast(models.Students.identification, String).ilike(f"%{data.identification}%")
+        ))
+    query = db.execute(querydata)
+    return query.scalars().all()
 
 def getStudents(db: Session):
     return db.query(models.Students).all()
@@ -78,7 +86,7 @@ def createInvoice(db: Session, invoice: schemas.InvoiceCreate):
     db.add(db_invoice)
     db.commit()
     db.refresh(db_invoice)
-    return {"message": "Factura creada exitosamente", "status": "success"}
+    return {"message": "Factura creada exitosamente", "status": "success", "invoice": db_invoice}
 
 def getInvoice(db: Session, data: schemas.InvoiceSearch):
     query = db.query(models.Invoices)

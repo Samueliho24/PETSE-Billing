@@ -17,6 +17,7 @@ class Invoices(Base):
     __tablename__ = "invoices"
 
     id = Column(String, primary_key=True, index=True, nullable=False, default=lambda: str(uuid.uuid4()))
+    number = Column(Integer, unique=True, autoincrement=True)
     userId = Column(String, ForeignKey("users.id"))
     studentId = Column(String, ForeignKey("students.id"))
     amount = Column(Numeric(20, 4))
@@ -64,7 +65,6 @@ class Users(Base):
 
     id = Column(String, primary_key=True, index=True, nullable=False, default=lambda: str(uuid.uuid4()))
     username = Column(String, unique=True)
-    email = Column(String)
     password = Column(String)
     name = Column(String)
     identification = Column(Integer, unique=True)
