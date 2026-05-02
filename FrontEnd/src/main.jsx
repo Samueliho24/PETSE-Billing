@@ -1,7 +1,6 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { ConfigProvider, theme } from 'antd'
-import './stylePages.css'
 import RouterContextProvider from './context/RouterContextProvider'
 import App from './App'
 
