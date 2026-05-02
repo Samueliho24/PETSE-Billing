@@ -3,7 +3,7 @@ import { routerContext } from "./routerContext"
 
 const RouterContextProvider = ({children}) => {
 
-    const [view, setView] = useState('Login')
+    const [view, setView] = useState('BillingPanel')
 
     return(
         <routerContext.Provider
