@@ -6,6 +6,7 @@ import React from 'react'
 const ContextProvider = ({children}) => {
 
 	const [userData, setUserData] = useState('')
+	const [exchangeRate, setExchangeRate] = useState(0)
 	const [searchText, setSearchText] = useState('')
 	const [titleSection, setTitleSection] = useState('')
 	const [logged, setLogged] = useState(false)
@@ -16,6 +17,8 @@ const ContextProvider = ({children}) => {
 		<appContext.Provider value={{
 			userData,
 			setUserData,
+			exchangeRate,
+			setExchangeRate,
 			logged,
 			setLogged,
 			theme,
